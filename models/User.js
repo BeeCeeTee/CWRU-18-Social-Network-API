@@ -16,14 +16,18 @@ const userSchema = new Schema(
       unique: true,
       match: [emailRegex, 'Please enter a valid email address']
     },
-    thoughts: {
-      type: Array,
-      // Array of _id values referencing the Thought model
-    },
-    friends: {
-      type: Array,
-      // Array of _id values referencing the User model (self-reference)
-    },
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'thought'
+      }
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+      }
+    ],
   },
   {
     toJSON: {

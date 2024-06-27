@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema(
   {
@@ -11,16 +12,17 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      // Use a getter method to format the timestamp on query
+      get: (date) => {
+        const formatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+        const formattedDateTime = formatter.formate(date);
+        return formattedDateTime;
+      }
     },
     username: {
       type: String,
       required: true
     },
-    reactions: {
-      type: Array,
-      // Array of nested documents created with the reactionSchema
-    }
+    reactions: [reactionSchema]
   },
   {
     toJSON: {

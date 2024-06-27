@@ -72,7 +72,26 @@ module.exports = {
 
   async createReaction(req, res) {
     try {
-      const reaction = await reactionSchema.create(req.body);
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: {reactionId: req.params.reactionId }} },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with this id!' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+  },
+
+  async deleteReaction(req, res) {
+    try {
+      const reaction = await reactionSchema.delete(req.body);
       res.json(reaction);
     } catch (err) {
       console.log(err);
