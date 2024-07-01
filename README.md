@@ -14,6 +14,18 @@ This project is the api for a social network where users can share their thought
   Since this project is not deployed, but is instead run locally, view the following videos for a demonstration:
    <br/><br/>
 
+User Routes Demo:<br>
+
+https://github.com/BeeCeeTee/CWRU-18-Social-Network-API/assets/117789057/1d4a2f7e-f97e-4b42-8fba-a3d76c083830
+
+<br>
+
+Thought Routes Demo: <br>
+
+https://github.com/BeeCeeTee/CWRU-18-Social-Network-API/assets/117789057/5512212e-b736-4172-9883-2757fc9a449c
+
+<br>
+
 
 
    <br/><br/>
