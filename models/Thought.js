@@ -14,7 +14,8 @@ const thoughtSchema = new Schema(
       default: Date.now,
       get: (date) => {
         const formatter = new Intl.DateTimeFormat('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-        const formattedDateTime = formatter.formate(date);
+        const formattedDateTime = formatter.format(date);
+        console.log(formattedDateTime);
         return formattedDateTime;
       }
     },
@@ -27,6 +28,7 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     id: false,
   }

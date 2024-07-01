@@ -28,8 +28,7 @@ module.exports = {
       }
 
       res.json({
-        user,
-        grade: await grade(req.params.userId),
+        user
       });
     } catch (err) {
       console.log(err);
@@ -45,10 +44,19 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
+  async updateUser(req, res) {
+    try {
+      const user = await User.updateOne(req.body);
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
   // Delete a user and remove associated thoughts
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndRemove({ _id: req.params.userId });
+      const user = await User.findOneAndDelete({ _id: req.params.userId });
 
       if (!user) {
         return res.status(404).json({ message: 'No such user exists' })
@@ -78,9 +86,9 @@ module.exports = {
     try {
       console.log('You are adding a friend');
       console.log(req.body);
-      const student = await User.findOneAndUpdate(
+      const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.body } },
+        { $addToSet: { friends: req.body.id } },
         { runValidators: true, new: true }
       );
 
@@ -92,6 +100,7 @@ module.exports = {
 
       res.json(user);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -100,7 +109,7 @@ module.exports = {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friends: { friendId: req.params.friendId } } },
+        { $pull: { friends: req.params.id } },
         { runValidators: true, new: true }
       );
 

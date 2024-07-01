@@ -5,9 +5,12 @@ module.exports = {
   async getThoughts(req, res) {
     try {
       const thoughts = await Thought.find()
-      .populate('users');
-      res.json(thoughts);
+      const thoughtObj = {
+        thoughts
+      };
+      return res.json(thoughtObj);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -15,13 +18,16 @@ module.exports = {
   async getSingleThought(req, res) {
     try {
       const thought = await Thought.findOne({ _id: req.params.thoughtId })
-      .populate('users');
+      .select('-__v')
+        .lean();
 
       if (!thought) {
         return res.status(404).json({ message: 'No thought with that ID' });
       }
 
-      res.json(thought);
+      res.json({
+        thought
+      });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -46,7 +52,7 @@ module.exports = {
       }
 
       await User.deleteMany({ _id: { $in: thought.users } });
-      res.json({ message: 'Thought and users deleted!' });
+      res.json({ message: 'Thought deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -74,7 +80,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: {reactionId: req.params.reactionId }} },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
 
@@ -91,8 +97,15 @@ module.exports = {
 
   async deleteReaction(req, res) {
     try {
-      const reaction = await reactionSchema.delete(req.body);
-      res.json(reaction);
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: {reactionId: req.params.reactionId }} },
+        { runValidators: true, new: true }
+      );
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with this id!' });
+      }
+      res.json(thought)
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
