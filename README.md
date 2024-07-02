@@ -26,7 +26,17 @@ https://github.com/BeeCeeTee/CWRU-18-Social-Network-API/assets/117789057/5512212
 
 <br>
 
+Friend Routes Demo: <br>
 
+
+
+<br>
+
+Reaction Routes Demo: <br>
+
+https://github.com/BeeCeeTee/CWRU-18-Social-Network-API/assets/117789057/aa6527d2-a882-4086-b4e6-326ca82b3d6a
+
+<br>
 
    <br/><br/>
 ([Back to Top](#table-of-contents))
